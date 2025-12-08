@@ -1,5 +1,4 @@
 // app/community/[id]/page.tsx
-
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -31,7 +30,6 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
 
   return (
     <div className="page">
-      {/* ───────── 상단 헤더 ───────── */}
       <header className="section-header section-header-with-back">
         <div>
           <p className="breadcrumb">
@@ -60,10 +58,8 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
         </div>
       </header>
 
-      {/* ───────── 게시글 본문 + 사이드 메타 ───────── */}
       <section className="section section-post-detail">
         <div className="post-detail-layout">
-          {/* 본문 */}
           <article className="card card-surface post-main">
             <header className="post-header">
               <div className="post-author">
@@ -84,9 +80,7 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
             </div>
           </article>
 
-          {/* 사이드 정보 (투표 or 정보박스) */}
           <aside className="post-side">
-            {/* 투표형 게시글일 때만 렌더링 */}
             {post.hasPoll && poll && (
               <div className="card card-surface poll-box">
                 <h2 className="card-title">투표</h2>
@@ -97,15 +91,7 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
                     아직 투표 선택지가 설정되지 않았습니다.
                   </p>
                 ) : (
-                  <form
-                    className="poll-form"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      alert(
-                        '지금은 투표 UI만 구현된 상태입니다. 나중에 투표 결과를 저장하는 기능을 추가할 수 있어요.'
-                      )
-                    }}
-                  >
+                  <form className="poll-form">
                     <div className="poll-options">
                       {options.map((opt) => {
                         const totalVotes = options.reduce(
@@ -142,8 +128,8 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
                     </div>
 
                     <div className="form-actions">
-                      <button type="submit" className="btn btn-primary btn-sm">
-                        투표하기
+                      <button type="button" className="btn btn-primary btn-sm">
+                        (예정) 투표하기
                       </button>
                     </div>
                   </form>
@@ -151,7 +137,6 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
               </div>
             )}
 
-            {/* 투표가 없을 때는 간단한 정보 박스 등으로 확장 가능 */}
             {!post.hasPoll && (
               <div className="card card-surface">
                 <h2 className="card-title">게시글 정보</h2>
@@ -165,7 +150,7 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
         </div>
       </section>
 
-      {/* ───────── 댓글 목록 ───────── */}
+      {/* 댓글 목록 */}
       <section className="section">
         <header className="section-header">
           <h2 className="section-title">댓글</h2>
@@ -205,24 +190,16 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
         )}
       </section>
 
-      {/* ───────── 댓글 작성 폼 (UI) ───────── */}
+      {/* 댓글 작성 폼 (UI만) */}
       <section className="section">
         <header className="section-header">
           <h2 className="section-title">댓글 작성</h2>
           <p className="section-description">
-            닉네임을 입력하고 자유롭게 의견을 남겨보세요.
+            닉네임을 입력하고 자유롭게 의견을 남겨보세요. (현재는 UI만 동작)
           </p>
         </header>
 
-        <form
-          className="card card-surface comment-form"
-          onSubmit={(e) => {
-            e.preventDefault()
-            alert(
-              '지금은 UI만 구현된 상태입니다. 나중에 댓글 저장 기능을 추가해서 진짜로 동작하게 만들 수 있어요.'
-            )
-          }}
-        >
+        <form className="card card-surface comment-form">
           <div className="form-row">
             <label className="form-label">
               닉네임
@@ -248,8 +225,8 @@ export default function CommunityPostPage({ params }: CommunityPostPageProps) {
           </label>
 
           <div className="form-actions">
-            <button type="submit" className="btn btn-primary">
-              댓글 등록
+            <button type="button" className="btn btn-primary">
+              (예정) 댓글 등록
             </button>
           </div>
         </form>

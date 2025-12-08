@@ -58,14 +58,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <section className="w-96 bg-white p-6 rounded-xl shadow space-y-4">
-        <h1 className="text-xl font-semibold text-center">로그인</h1>
+      <section className="section">
+        <h1>로그인</h1>
 
         <input
           type="email"
           placeholder="이메일"
-          className="w-full border rounded px-3 py-2"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -73,36 +71,32 @@ export default function LoginPage() {
         <input
           type="password"
           placeholder="비밀번호"
-          className="w-full border rounded px-3 py-2"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
         {message && (
-          <p className="text-sm text-red-500 text-center">{message}</p>
+          <p>{message}</p>
         )}
 
         <button
           onClick={handleLogin}
           disabled={loading}
-          className="w-full py-2 rounded bg-black text-white hover:bg-gray-800 disabled:opacity-50"
         >
           {loading ? "확인 중…" : "로그인"}
         </button>
 
         {/* 🌱 회원가입 제안 */}
         {showSignupSuggestion && (
-          <div className="pt-4 text-center text-sm text-gray-600">
+          <div>
             <p>아직 계정이 없는 이메일이야.</p>
             <button
               onClick={() => router.push("/signup")}
-              className="mt-2 underline text-black hover:text-gray-700"
             >
               회원가입 하러 갈까?
             </button>
           </div>
         )}
       </section>
-    </div>
   );
 }

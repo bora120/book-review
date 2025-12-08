@@ -52,23 +52,21 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <section className="w-96 bg-white p-6 rounded-xl shadow space-y-4">
+      <section className="section">
         {step === "signup" ? (
           <div>
             <input 
             type="email" 
             placeholder="이메일" 
-            className="w-full border rounded px-3 py-2" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             />
 
             {/* 🔐 비밀번호 입력 + 적용 버튼 */} 
-            <div className="flex items-center gap-2"> 
+            <div> 
               <input 
               type="password" 
-              placeholder="비밀번호" 
-              className="flex-1 border rounded px-3 py-2" 
+              placeholder="비밀번호"  
               value={password} 
               onChange={(e) => { 
                 setPassword(e.target.value);
@@ -80,14 +78,15 @@ export default function SignupPage() {
                 <button 
                 type="button" 
                 onClick={() => setPassword(generatedPassword)} 
-                className="px-3 py-2 text-sm bg-gray-100 rounded hover:bg-gray-200" 
                 > 
                   적용 
                 </button> 
               )} 
             </div>
             
-            {/* 🎲 비밀번호 추천 */} <PasswordGenerator onGenerate={(pw) => { setGeneratedPassword(pw); setPassword(pw); }} /> {message && ( <p className="text-sm text-center text-red-500">{message}</p> )}
+            {/* 🎲 비밀번호 추천 */} <PasswordGenerator onGenerate={(pw) => { setGeneratedPassword(pw); setPassword(pw); }} /> {message && ( 
+              <p>{message}</p> 
+            )}
             
             <button onClick={handleSignup}>가입하기</button>
           </div>
