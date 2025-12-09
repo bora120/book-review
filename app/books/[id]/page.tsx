@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { stripHtml } from '@/lib/utils/text'
+import ReviewForm from './review-form' // ✅ 추가된 부분
 
 type GoogleBook = {
   id: string
@@ -199,17 +200,9 @@ export default function BookDetailPage() {
               </div>
             </div>
 
-            {/* 오른쪽: 나중에 우리 플랫폼 리뷰 넣을 자리 */}
+            {/* 오른쪽: 리뷰 폼 영역만 교체 */}
             <aside className="book-side">
-              <div className="card card-surface">
-                <div className="card-body">
-                  <h2 className="card-title">플랫폼 리뷰 & 메모</h2>
-                  <p className="muted-text">
-                    나중에 이 플랫폼에서 작성한 리뷰, 별점, 메모 등을
-                    <br />이 영역에 표시하도록 확장할 수 있습니다.
-                  </p>
-                </div>
-              </div>
+              <ReviewForm bookId={book.id} />
             </aside>
           </div>
         )}

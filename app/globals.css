@@ -751,3 +751,133 @@ textarea.textarea {
 .comment-form {
   max-width: 640px;
 }
+
+/* ==== 리뷰 섹션 (도서 상세 오른쪽) ==== */
+
+.review-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13px;
+}
+
+/* 요약 카드 안 글자 조금 작게 */
+.review-summary {
+  font-size: 13px;
+}
+
+.review-summary .card-title {
+  font-size: 15px;
+}
+
+/* 리뷰 목록 박스: 길어지면 안에서만 스크롤 */
+.review-list-box {
+  border-radius: 16px;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  background: rgba(15, 23, 42, 0.9);
+  padding: 10px 12px;
+  max-height: 260px; /* 많이 달려도 이 안에서만 스크롤 */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 리뷰 한 개 카드 */
+.review-item {
+  border-radius: 10px;
+  background: #020617;
+  border: 1px solid rgba(31, 41, 55, 0.9);
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* 닉네임 / 별점 / 날짜 정렬 */
+.review-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.review-item-nickname {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.review-item-date {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.review-item-rating {
+  font-size: 11px;
+  color: #facc15;
+  white-space: nowrap;
+}
+
+/* 본문 */
+.review-item-content {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--color-text-main);
+  white-space: pre-line;
+}
+
+/* 빈 상태 / 로딩 텍스트 */
+.review-list-empty {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* 리뷰 작성 카드 */
+.review-form-card {
+  font-size: 13px;
+}
+
+.review-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.review-form-label {
+  font-size: 12px;
+}
+
+.review-form-input {
+  font-size: 12px;
+}
+
+.review-form-textarea {
+  font-size: 12px;
+}
+
+.review-form-message {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.review-form-message.error {
+  color: #fca5a5;
+}
+
+.review-form-message.success {
+  color: #6ee7b7;
+}
+
+.review-form-card .form-label {
+  flex: 0 0 auto !important;
+}
+
+.review-form-card .review-form-row {
+  margin-top: 0 !important;
+  gap: 0 !important;
+}
+
+.review-form-card .review-form-row + .form-label {
+  margin-top: 2px !important;
+}
