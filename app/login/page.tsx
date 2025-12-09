@@ -1,102 +1,107 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
 
   const [showSignupSuggestion, setShowSignupSuggestion] =
-    useState<boolean>(false);
+    useState<boolean>(false)
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setMessage("이메일과 비밀번호를 입력해주세요.");
-      return;
+      setMessage('이메일과 비밀번호를 입력해주세요.')
+      return
     }
 
-    setLoading(true);
-    setMessage("");
-    setShowSignupSuggestion(false);
+    setLoading(true)
+    setMessage('')
+    setShowSignupSuggestion(false)
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
+      const res = await fetch('/api/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-      });
+      })
 
-      const text = await res.text();
+      const text = await res.text()
 
       if (!res.ok) {
-        setMessage(text);
+        setMessage(text)
 
         // ✅ 없는 이메일인 경우만 회원가입 제안
         if (res.status === 404) {
-          setShowSignupSuggestion(true);
+          setShowSignupSuggestion(true)
         }
 
-        setLoading(false);
-        return;
+        setLoading(false)
+        return
       }
 
-      // 로그인 성공
-      router.push("/");
+      // ✅ 로그인 성공 → localStorage에 사용자 정보 저장
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('userEmail', email)
+          // 간단히 이메일 앞부분을 닉네임처럼 사용
+          const nameFromEmail = email.split('@')[0] || email
+          localStorage.setItem('userName', nameFromEmail)
+        }
+      } catch (e) {
+        console.error('Failed to save login info to localStorage', e)
+      }
+
+      // 기존 동작 유지: 홈으로 이동
+      router.push('/')
     } catch (err) {
-      setMessage("잠시만 기다려 주십시오.");
+      setMessage('잠시만 기다려 주십시오.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-      <section className="section">
-        <h1>로그인</h1>
+    <section className="section">
+      <h1>로그인</h1>
 
-        <input
-          type="email"
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="이메일"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <input
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <input
+        type="password"
+        placeholder="비밀번호"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-        {message && (
-          <p>{message}</p>
-        )}
+      {message && <p>{message}</p>}
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-        >
-          {loading ? "확인 중…" : "로그인"}
-        </button>
+      <button onClick={handleLogin} disabled={loading}>
+        {loading ? '확인 중…' : '로그인'}
+      </button>
 
-        {/* 🌱 회원가입 제안 */}
-        {showSignupSuggestion && (
-          <div>
-            <p>아직 계정이 없는 이메일이야.</p>
-            <button
-              onClick={() => router.push("/signup")}
-            >
-              회원가입 하러 갈까?
-            </button>
-          </div>
-        )}
-      </section>
-  );
+      {/* 🌱 회원가입 제안 */}
+      {showSignupSuggestion && (
+        <div>
+          <p>아직 계정이 없는 이메일이야.</p>
+          <button onClick={() => router.push('/signup')}>
+            회원가입 하러 갈까?
+          </button>
+        </div>
+      )}
+    </section>
+  )
 }
