@@ -1,3 +1,5 @@
+// app/mypage/page.tsx
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -13,108 +15,130 @@ export default function MyPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const email = localStorage.getItem('userEmail')
-        const name = localStorage.getItem('userName')
+    if (typeof window === 'undefined') return
 
-        if (email) {
-          setUser({
-            email,
-            name: name || '',
-          })
-        } else {
-          setUser(null)
-        }
+    try {
+      const email = localStorage.getItem('userEmail')
+      const name = localStorage.getItem('userName')
+
+      if (email) {
+        setUser({
+          email,
+          name: name || '',
+        })
+      } else {
+        setUser(null)
       }
     } catch (e) {
-      console.error('Failed to load user info from localStorage', e)
+      console.error('Failed to load user info', e)
       setUser(null)
     } finally {
       setLoading(false)
     }
   }, [])
 
+  // ⏳ 확인 중
   if (loading) {
     return (
-      <main className="page flex items-center justify-center">
-        <p className="muted-text">마이페이지를 불러오는 중입니다...</p>
+      <main className="page">
+        <section className="section">
+          <header className="section-header">
+            <h1 className="section-title">마이페이지</h1>
+            <p className="section-description">
+              내 계정 정보를 불러오는 중입니다.
+            </p>
+          </header>
+
+          <div className="card card-surface">
+            <div className="card-body">
+              <p className="muted-text">마이페이지를 불러오는 중...</p>
+            </div>
+          </div>
+        </section>
       </main>
     )
   }
 
+  // 🔒 로그인 필요 상태
+  if (!user) {
+    return (
+      <main className="page">
+        <section className="section">
+          <header className="section-header">
+            <h1 className="section-title">마이페이지</h1>
+            <p className="section-description">
+              내 활동과 계정 정보를 확인하려면 먼저 로그인해야 합니다.
+            </p>
+          </header>
+
+          <div className="card card-surface">
+            <div className="card-body">
+              <p className="muted-text" style={{ marginBottom: 12 }}>
+                아직 로그인하지 않은 상태입니다.
+              </p>
+
+              <div className="form-actions">
+                <Link href="/login" className="btn btn-primary">
+                  로그인 하러 가기
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    )
+  }
+
+  // ✅ 로그인된 상태
   return (
     <main className="page">
-      {/* 상단 헤더 */}
-      <header className="section-header section-header-with-back">
-        <div>
-          <p className="breadcrumb">
-            <Link href="/" className="breadcrumb-link">
-              홈
-            </Link>{' '}
-            <span className="breadcrumb-separator">/</span>{' '}
-            <span className="breadcrumb-current">마이페이지</span>
-          </p>
+      <section className="section">
+        <header className="section-header">
           <h1 className="section-title">마이페이지</h1>
           <p className="section-description">
-            로그인 정보와 앞으로 추가될 리뷰·커뮤니티 활동을 한 곳에서 관리하는
-            공간입니다.
+            현재 로그인 중인 계정 정보를 확인할 수 있습니다.
           </p>
-        </div>
+        </header>
 
-        <div className="header-actions">
-          <Link href="/books" className="btn btn-sm btn-ghost">
-            도서 보러가기
-          </Link>
-        </div>
-      </header>
+        <div className="card card-surface">
+          <div className="card-body">
+            {/* 상단 프로필 영역 */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                marginBottom: 12,
+              }}
+            >
+              <div className="avatar-circle">
+                {(user.name || user.email)[0]?.toUpperCase()}
+              </div>
+              <div>
+                <p className="nickname-text">
+                  {user.name || user.email.split('@')[0]}
+                </p>
+                <p className="meta-text">내 독서 리뷰 계정</p>
+              </div>
+            </div>
 
-      {/* 본문 */}
-      <section className="section">
-        <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-          {/* 유저 정보 카드 */}
-          <article className="card card-surface">
-            <div className="card-body space-y-4">
-              <h2 className="card-title">내 정보</h2>
+            {/* 기본 정보 */}
+            <div style={{ fontSize: 13, lineHeight: 1.6 }}>
+              <p>
+                <span className="meta-muted">이메일</span>
+                <br />
+                {user.email}
+              </p>
 
-              {user ? (
-                <div className="space-y-3">
-                  <div>
-                    <p className="meta-text meta-muted mb-1">이메일</p>
-                    <p className="font-medium">{user.email}</p>
-                  </div>
-
-                  {user.name && (
-                    <div>
-                      <p className="meta-text meta-muted mb-1">이름 / 닉네임</p>
-                      <p className="font-medium">{user.name}</p>
-                    </div>
-                  )}
-
-                  <p className="text-sm text-slate-400">
-                    로그인 시 입력한 정보를 기반으로 표시됩니다.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="font-medium">로그인된 사용자가 없습니다.</p>
-                  <p className="text-sm text-slate-400">
-                    향후 로그인 기능이 추가되면, 이곳에서 내 정보를 확인하고
-                    수정할 수 있습니다.
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-primary"
-                      disabled
-                    >
-                      로그인 (준비 중)
-                    </button>
-                  </div>
-                </div>
+              {user.name && (
+                <p style={{ marginTop: 8 }}>
+                  <span className="meta-muted">닉네임</span>
+                  <br />
+                  {user.name}
+                </p>
               )}
             </div>
-          </article>
+          </div>
         </div>
       </section>
     </main>
