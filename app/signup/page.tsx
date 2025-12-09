@@ -83,6 +83,8 @@ export default function SignupPage() {
                 </button> 
               )} 
             </div>
+
+            <PasswordStrength password={password} />
             
             {/* 🎲 비밀번호 추천 */} <PasswordGenerator onGenerate={(pw) => { setGeneratedPassword(pw); setPassword(pw); }} /> {message && ( 
               <p>{message}</p> 
